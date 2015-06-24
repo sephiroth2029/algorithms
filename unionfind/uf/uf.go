@@ -20,19 +20,23 @@ func NewUF(N int) *UF {
 	return &uf
 }
 
+func (uf *UF) root(i int) int {
+	for i != uf.id[i] {
+		i = uf.id[i]
+	}
+
+	return i
+}
+
 // Connected checks if two objects are in the same component
 func (uf *UF) Connected(p, q int) bool {
-	return uf.id[p] == uf.id[q]
+	return uf.root(p) == uf.root(q)
 }
 
 // Union connects the given objects.
 func (uf *UF) Union(p, q int) {
-	pid := uf.id[p]
-	qid := uf.id[q]
+	i := uf.root(p)
+	j := uf.root(q)
 
-	for i := range uf.id {
-		if uf.id[i] == pid {
-			uf.id[i] = qid
-		}
-	}
+	uf.id[i] = j
 }
