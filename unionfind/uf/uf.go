@@ -25,6 +25,7 @@ func NewUF(N int) *UF {
 
 func (uf *UF) root(i int) int {
 	for i != uf.id[i] {
+		uf.id[i] = uf.id[uf.id[i]]
 		i = uf.id[i]
 	}
 
