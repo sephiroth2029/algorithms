@@ -5,6 +5,7 @@ package uf
 type UF struct {
 	N  int
 	id []int
+	sz []int
 }
 
 // NewUF creates and initializes a new implementation of the algorithm.
@@ -13,8 +14,10 @@ func NewUF(N int) *UF {
 
 	uf.N = N
 	uf.id = make([]int, N)
+	uf.sz = make([]int, N)
 	for i := 0; i < N; i++ {
 		uf.id[i] = i
+		uf.sz[i] = 1
 	}
 
 	return &uf
@@ -38,5 +41,14 @@ func (uf *UF) Union(p, q int) {
 	i := uf.root(p)
 	j := uf.root(q)
 
-	uf.id[i] = j
+	if i == j {
+		return
+	}
+	if uf.sz[i] < uf.sz[j] {
+		uf.id[i] = j
+		uf.sz[j] += uf.sz[i]
+	} else {
+		uf.id[j] = i
+		uf.sz[i] += uf.sz[j]
+	}
 }
