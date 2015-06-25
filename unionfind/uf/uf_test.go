@@ -4,19 +4,38 @@ import "testing"
 
 // TestConnected tests that the algorithm is properly identifying the reflective
 // property.
-func TestConnectedReflective(t *testing.T) {
-	var uf UF
-	uf.N = 2
+func TestConnectedAfterUnion(t *testing.T) {
+	ufAlg := NewUF(10)
 
-	if !uf.Connected(0, 0) {
-		t.Error("The reflective property isn't working.")
+	ufAlg.Union(0, 1)
+	if !ufAlg.Connected(0, 1) {
+		t.Error("Union and Connected aren't working.")
 	}
 }
 
-// TestUnion tests that the algorithm is properly connecting two objects.
-func TestUnion(t *testing.T) {
-	var uf UF
-	uf.N = 2
+// TestConnected tests that the algorithm is properly identifying the reflective
+// property.
+func TestConnectedSymmetric(t *testing.T) {
+	ufAlg := NewUF(10)
 
-	uf.Union(0, 1)
+	ufAlg.Union(0, 5)
+	if !ufAlg.Connected(0, 5) {
+		t.Error("The symmetric property isn't working.")
+	}
+
+	if !ufAlg.Connected(5, 0) {
+		t.Error("The symmetric property isn't working.")
+	}
+}
+
+// TestConnected tests that the algorithm is properly identifying the reflective
+// property.
+func TestConnectedTransitive(t *testing.T) {
+	ufAlg := NewUF(10)
+
+	ufAlg.Union(0, 5)
+	ufAlg.Union(5, 3)
+	if !ufAlg.Connected(0, 3) {
+		t.Error("The transitive property isn't working.")
+	}
 }

@@ -23,22 +23,25 @@ func main() {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	var uf uf.UF
+	var ufAlg uf.UF
 	if scanner.Scan() {
-		uf.N, err = strconv.ParseInt(scanner.Text(), 0, 64)
+		var n int
+		n, err = strconv.Atoi(scanner.Text())
 		check(err)
+
+		ufAlg = *uf.NewUF(n)
 	}
 
 	for scanner.Scan() {
 		pairs := strings.Split(scanner.Text(), " ")
-		p, err := strconv.ParseInt(pairs[0], 0, 64)
+		p, err := strconv.Atoi(pairs[0])
 		check(err)
 
-		q, err := strconv.ParseInt(pairs[1], 0, 64)
+		q, err := strconv.Atoi(pairs[1])
 		check(err)
 
-		if !uf.Connected(p, q) {
-			uf.Union(p, q)
+		if !ufAlg.Connected(p, q) {
+			ufAlg.Union(p, q)
 			fmt.Println(p, q)
 		}
 	}
